@@ -15,7 +15,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Validate username
   if (empty($uname)) {
     $uname_err = "Please enter a username.";
-  }
+  }elseif (!preg_match("/^[a-zA-Z0-9_]+$/", $uname)) {
+    $uname_err = "Username can only contain letters, numbers, and underscores.";
+}
 
   // Validate email
   if (empty($email)) {
