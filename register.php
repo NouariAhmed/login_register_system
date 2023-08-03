@@ -71,7 +71,12 @@ if (empty($uname_err) && empty($email_err) && empty($pwd_err)&& empty($confirm_p
         $hashed_pwd = password_hash($pwd, PASSWORD_DEFAULT);
         mysqli_stmt_bind_param($stmt_insert_user, "sss", $uname, $email, $hashed_pwd);
         mysqli_stmt_execute($stmt_insert_user);
+        // Registration successful, show success message
+        $register_success_msg = "Registration successful. You can now log in.";
 
+        // Store the success message in a session variable
+        session_start();
+        $_SESSION['register_success_msg'] = $register_success_msg;
         // Registration successful, redirect to login page or dashboard
         header("Location: login.php");
         exit();
@@ -95,37 +100,7 @@ if (empty($uname_err) && empty($email_err) && empty($pwd_err)&& empty($confirm_p
   <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/droid-arabic-kufi" type="text/css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-  <style>
-    body {
-      font-family: DroidArabicKufiRegular;
-      margin: 0px;
-    }
-
-    :root {
-      --main-bg: linear-gradient(90deg, #0152A1 0%, #B3B3FF 100%);
-    }
-
-    .main-bg {
-      background: var(--main-bg) !important;
-    }
-
-    input:focus,
-    button:focus {
-      border: 1px solid lightblue !important;
-      box-shadow: none !important;
-    }
-
-    .form-check-input:checked {
-      background-color: var(--main-bg) !important;
-      border-color: var(--main-bg) !important;
-    }
-
-    .card,
-    .btn,
-    input {
-      border-radius: 30px !important;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body class="main-bg d-flex justify-content-center align-items-center">
@@ -139,28 +114,27 @@ if (empty($uname_err) && empty($email_err) && empty($pwd_err)&& empty($confirm_p
           </div>
           <div class="card-body">
             <form method="post" action="">
-              <div class="mb-4" dir="rtl">
-                <label for="username" class="form-label">إسم المستخدم</label>
+              <div class="mb-4">
+                <label for="username" class="form-label">Username</label>
                 <input type="text" class="form-control <?php echo (!empty($uname_err)) ? 'is-invalid' : ''; ?>"
                   id="username" name="txt_uname" value="<?php echo $uname; ?>" />
                 <span class="invalid-feedback"><?php echo $uname_err; ?></span>
               </div>
-              <div class="mb-4" dir="rtl">
-                <label for="email" class="form-label">الإيميل</label>
+              <div class="mb-4">
+                <label for="email" class="form-label">Email Address</label>
                 <input type="email" class="form-control <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>"
                   id="email" name="txt_email" value="<?php echo $email; ?>" />
                 <span class="invalid-feedback"><?php echo $email_err; ?></span>
               </div>
-              <div class="mb-4" dir="rtl">
-                <label for="password" class="form-label">كلمة المرور</label>
+              <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control <?php echo (!empty($pwd_err)) ? 'is-invalid' : ''; ?>"
                   id="password" name="txt_pwd" />
                 <span class="invalid-feedback"><?php echo $pwd_err; ?></span>
               </div>
-              <div class="mb-4" dir="rtl">
-                <label for="confirm_pwd" class="form-label">تأكيد كلمة المرور</label>
-                <input type="password"
-                  class="form-control <?php echo (!empty($confirm_pwd_err)) ? 'is-invalid' : ''; ?>" id="confirm_pwd"
+              <div class="mb-4">
+                <label for="confirm_pwd" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control <?php echo (!empty($confirm_pwd_err)) ? 'is-invalid' : ''; ?>" id="confirm_pwd"
                   name="txt_confirm_pwd" />
                 <span class="invalid-feedback"><?php echo $confirm_pwd_err; ?></span>
               </div>
@@ -168,15 +142,21 @@ if (empty($uname_err) && empty($email_err) && empty($pwd_err)&& empty($confirm_p
                 <button type="submit" class="btn text-light main-bg" name="but_submit">Register</button>
               </div>
               <?php if (!empty($register_err)) { ?>
-              <div class="alert alert-danger mt-3" role="alert" dir="rtl">
-                <?php echo $register_err; ?>
-              </div>
+                <div class="alert alert-danger mt-3" role="alert">
+                  <?php echo $register_err; ?>
+                </div>
               <?php } ?>
             </form>
           </div>
         </div>
       </div>
     </div>
+     <!-- Sign In Link -->
+        <div class="row justify-content-center mt-3">
+            <div class="col-lg-4 col-md-6 col-sm-6 text-center">
+                <p class="mb-0">Already a member? <a href="login.php" class="text-decoration-none">Sign In</a></p>
+            </div>
+        </div>
   </div>
 
 </body>

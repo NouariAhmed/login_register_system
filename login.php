@@ -1,4 +1,12 @@
 <?php
+session_start(); // Start the session (if not already started)
+
+// Check if the registration success message exists in the session
+if (isset($_SESSION['register_success_msg'])) {
+    $register_success_msg = $_SESSION['register_success_msg'];
+    unset($_SESSION['register_success_msg']); // Remove the message from the session
+}
+
 // Initialize variables
 $uname = "";
 $uname_err = "";
@@ -71,6 +79,7 @@ if (empty($uname_err) && empty($pwd_err)) {
 }
 
 }
+
 ?>
 
 
@@ -85,37 +94,9 @@ if (empty($uname_err) && empty($pwd_err)) {
   <title>Login Form</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" />
 
-	   <link rel="stylesheet" media="screen" href="https://fontlibrary.org/face/droid-arabic-kufi" type="text/css"/>
 	  	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-	  
-  <style>
-        body {
-        font-family: DroidArabicKufiRegular;
-		  margin: 0px;
-      }
-    :root{
-      --main-bg: linear-gradient(90deg, #0152A1 0%, #B3B3FF 100%);
-}
-
-.main-bg {
-  background: var(--main-bg) !important;
-}
-
-input:focus, button:focus {
-  border: 1px solid lightblue !important;
-  box-shadow: none !important;
-}
-
-.form-check-input:checked {
-  background-color: var(--main-bg) !important;
-  border-color: var(--main-bg) !important;
-}
-
-.card, .btn, input{
-  border-radius:30px !important;
-}
-
-  </style>
+              <link rel="stylesheet" href="style.css">
+  
 </head>
 
 <body class="main-bg d-flex justify-content-center align-items-center">
@@ -129,38 +110,44 @@ input:focus, button:focus {
           </div>
           <div class="card-body">
             <form method="post" action="">
-              <div class="mb-4" dir="rtl">
-                <label for="username" class="form-label">اسم المستخدم /الإيمايل</label>
-                <input type="text" class="form-control <?php echo (!empty($uname_err)) ? 'is-invalid' : ''; ?>" id="username" name="txt_uname" value="<?php echo $uname; ?>"/>
+              <div class="mb-4">
+                <label for="username" class="form-label">Username / Email</label>
+                <input type="text" class="form-control <?php echo (!empty($uname_err)) ? 'is-invalid' : ''; ?>" id="username" name="txt_uname" value="<?php echo $uname; ?>" />
                 <span class="invalid-feedback"><?php echo $uname_err; ?></span>
               </div>
-              <div class="mb-4" dir="rtl">
-                <label for="password" class="form-label" dir="rtl">كلمة السر</label>
-                <input type="password" class="form-control <?php echo (!empty($pwd_err)) ? 'is-invalid' : ''; ?>" id="password" name="txt_pwd"/>
+              <div class="mb-4">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control <?php echo (!empty($pwd_err)) ? 'is-invalid' : ''; ?>" id="password" name="txt_pwd" />
                 <span class="invalid-feedback"><?php echo $pwd_err; ?></span>
               </div>
               <div class="d-grid">
-                <button type="submit" class="btn text-light main-bg" name="but_submit">login</button>
+                <button type="submit" class="btn text-light main-bg" name="but_submit">Login</button>
               </div>
-               <?php if (!empty($login_err)) { ?>
-      <div class="alert alert-danger mt-3" role="alert" dir="rtl">
-        <?php echo $login_err; ?>
-      </div>
-    <?php } ?>
+              <?php if (!empty($login_err)) { ?>
+                <div class="alert alert-danger mt-3" role="alert">
+                  <?php echo $login_err; ?>
+                </div>
+              <?php } ?>
+              <?php if (isset($register_success_msg)) { ?>
+                <div class="alert alert-success mt-3" role="alert">
+                  <?php echo $register_success_msg; ?>
+                </div>
+              <?php } ?>
             </form>
           </div>
         </div>
       </div>
     </div>
-        <!-- Sign Up Link -->
-        <div class="row justify-content-center mt-3">
+    <!-- Sign Up Link -->
+    <div class="row justify-content-center mt-3">
       <div class="col-lg-4 col-md-6 col-sm-6 text-center">
         <p class="mb-0">Not a member? <a href="register.php" class="text-decoration-none">Sign Up</a></p>
       </div>
     </div>
   </div>
- 
+
 </body>
+
 </html>
 
 
